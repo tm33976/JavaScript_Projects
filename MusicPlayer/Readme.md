@@ -34,7 +34,3 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Tushar Mishra
 
-## Acknowledgments
-
-- Inspired by modern music streaming platforms
-- Background image source: [Your Image Source Here]
