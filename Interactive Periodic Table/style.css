@@ -1,0 +1,127 @@
+:root {
+    --element-size: 60px;
+    --gap: 4px;
+    --transition-speed: 0.3s;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.periodic-table {
+    display: grid;
+    grid-template-columns: repeat(18, var(--element-size));
+    grid-auto-rows: var(--element-size);
+    gap: var(--gap);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.element {
+    width: var(--element-size);
+    height: var(--element-size);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    transition: all var(--transition-speed) ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.element:hover {
+    transform: scale(1.1);
+    z-index: 1;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.symbol {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.number {
+    font-size: 10px;
+    color: #666;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+}
+
+/* Element categories */
+.alkali-metal { background-color: #ff9999; }
+.alkaline-earth { background-color: #ffdead; }
+.transition-metal { background-color: #ffc0c0; }
+.post-transition { background-color: #cccccc; }
+.metalloid { background-color: #cccc99; }
+.nonmetal { background-color: #a0ffa0; }
+.halogen { background-color: #ffff99; }
+.noble-gas { background-color: #c0ffff; }
+.lanthanide { background-color: #ffbfff; }
+.actinide { background-color: #ff99cc; }
+
+.popup {
+    display: none;
+    position: fixed;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-width: 200px;
+}
+
+.popup h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.popup p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+    :root {
+        --element-size: 40px;
+        --gap: 2px;
+    }
+
+    .symbol {
+        font-size: 12px;
+    }
+
+    .number {
+        font-size: 8px;
+    }
+}
+
+@media (max-width: 800px) {
+    :root {
+        --element-size: 30px;
+        --gap: 1px;
+    }
+
+    .symbol {
+        font-size: 10px;
+    }
+
+    .number {
+        font-size: 6px;
+    }
+}

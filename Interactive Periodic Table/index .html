@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Periodic Table</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="periodic-table" id="periodicTable"></div>
+    <div class="popup" id="popup"></div>
+
+    <script>
+    const elements = [
+    { number: 1, symbol: 'H', name: 'Hydrogen', category: 'nonmetal', mass: 1.008, weight: 1, uses: 'Fuel, plastics, fertilizers' },
+    { number: 2, symbol: 'He', name: 'Helium', category: 'noble-gas', mass: 4.0026, weight: 4, uses: 'Balloons, cryogenics, welding' },
+    { number: 3, symbol: 'Li', name: 'Lithium', category: 'alkali-metal', mass: 6.94, weight: 7, uses: 'Batteries, aerospace alloys' },
+    { number: 4, symbol: 'Be', name: 'Beryllium', category: 'alkaline-earth', mass: 9.0122, weight: 9, uses: 'X-ray windows, aerospace' },
+    { number: 5, symbol: 'B', name: 'Boron', category: 'metalloid', mass: 10.81, weight: 11, uses: 'Fiberglass, ceramics' },
+    { number: 6, symbol: 'C', name: 'Carbon', category: 'nonmetal', mass: 12.011, weight: 12, uses: 'Steel, diamonds, graphite' },
+    { number: 7, symbol: 'N', name: 'Nitrogen', category: 'nonmetal', mass: 14.007, weight: 14, uses: 'Fertilizers, explosives' },
+    { number: 8, symbol: 'O', name: 'Oxygen', category: 'nonmetal', mass: 15.999, weight: 16, uses: 'Life, combustion, steel production' },
+    { number: 9, symbol: 'F', name: 'Fluorine', category: 'halogen', mass: 18.998, weight: 19, uses: 'Toothpaste, non-stick coatings' },
+    { number: 10, symbol: 'Ne', name: 'Neon', category: 'noble-gas', mass: 20.180, weight: 20, uses: 'Lighting, cryogenics' },
+    { number: 11, symbol: 'Na', name: 'Sodium', category: 'alkali-metal', mass: 22.990, weight: 23, uses: 'Salt, soap, glass' },
+    { number: 12, symbol: 'Mg', name: 'Magnesium', category: 'alkaline-earth', mass: 24.305, weight: 24, uses: 'Fireworks, alloys' },
+    { number: 13, symbol: 'Al', name: 'Aluminum', category: 'post-transition', mass: 26.982, weight: 27, uses: 'Packaging, construction' },
+    { number: 14, symbol: 'Si', name: 'Silicon', category: 'metalloid', mass: 28.085, weight: 28, uses: 'Electronics, glass' },
+    { number: 15, symbol: 'P', name: 'Phosphorus', category: 'nonmetal', mass: 30.974, weight: 31, uses: 'Fertilizers, explosives' },
+    { number: 16, symbol: 'S', name: 'Sulfur', category: 'nonmetal', mass: 32.06, weight: 32, uses: 'Fertilizers, sulfuric acid' },
+    { number: 17, symbol: 'Cl', name: 'Chlorine', category: 'halogen', mass: 35.45, weight: 35.5, uses: 'Disinfectants, plastics' },
+    { number: 18, symbol: 'Ar', name: 'Argon', category: 'noble-gas', mass: 39.948, weight: 40, uses: 'Lighting, welding' },
+    { number: 19, symbol: 'K', name: 'Potassium', category: 'alkali-metal', mass: 39.098, weight: 39, uses: 'Fertilizers, soap' },
+    { number: 20, symbol: 'Ca', name: 'Calcium', category: 'alkaline-earth', mass: 40.078, weight: 40, uses: 'Cement, bones' },
+    { number: 21, symbol: 'Sc', name: 'Scandium', category: 'transition-metal', mass: 44.955, weight: 45, uses: 'Aerospace, sports equipment' },
+    { number: 22, symbol: 'Ti', name: 'Titanium', category: 'transition-metal', mass: 47.867, weight: 48, uses: 'Aircraft, medical implants' },
+    { number: 23, symbol: 'V', name: 'Vanadium', category: 'transition-metal', mass: 50.942, weight: 51, uses: 'Steel alloys' },
+    { number: 24, symbol: 'Cr', name: 'Chromium', category: 'transition-metal', mass: 51.996, weight: 52, uses: 'Stainless steel, plating' },
+    { number: 25, symbol: 'Mn', name: 'Manganese', category: 'transition-metal', mass: 54.938, weight: 55, uses: 'Steel, batteries' },
+    { number: 26, symbol: 'Fe', name: 'Iron', category: 'transition-metal', mass: 55.845, weight: 56, uses: 'Steel, machinery' },
+    { number: 27, symbol: 'Co', name: 'Cobalt', category: 'transition-metal', mass: 58.933, weight: 59, uses: 'Batteries, magnets' },
+    { number: 28, symbol: 'Ni', name: 'Nickel', category: 'transition-metal', mass: 58.693, weight: 59, uses: 'Stainless steel, coins' },
+    { number: 29, symbol: 'Cu', name: 'Copper', category: 'transition-metal', mass: 63.546, weight: 64, uses: 'Electrical wiring, coins' },
+    { number: 30, symbol: 'Zn', name: 'Zinc', category: 'transition-metal', mass: 65.38, weight: 65, uses: 'Galvanizing, alloys' },
+    { number: 31, symbol: 'Ga', name: 'Gallium', category: 'post-transition', mass: 69.723, weight: 70, uses: 'Electronics, semiconductors' },
+    { number: 32, symbol: 'Ge', name: 'Germanium', category: 'metalloid', mass: 72.63, weight: 73, uses: 'Optics, electronics' },
+    { number: 33, symbol: 'As', name: 'Arsenic', category: 'metalloid', mass: 74.922, weight: 75, uses: 'Pesticides, semiconductors' },
+    { number: 34, symbol: 'Se', name: 'Selenium', category: 'nonmetal', mass: 78.971, weight: 79, uses: 'Glass, photocopiers' },
+    { number: 35, symbol: 'Br', name: 'Bromine', category: 'halogen', mass: 79.904, weight: 80, uses: 'Flame retardants, disinfectants' },
+    { number: 36, symbol: 'Kr', name: 'Krypton', category: 'noble-gas', mass: 83.798, weight: 84, uses: 'Lighting, photography' },
+    { number: 37, symbol: 'Rb', name: 'Rubidium', category: 'alkali-metal', mass: 85.468, weight: 85, uses: 'Research, atomic clocks' },
+    { number: 38, symbol: 'Sr', name: 'Strontium', category: 'alkaline-earth', mass: 87.62, weight: 88, uses: 'Fireworks, glass' },
+    { number: 39, symbol: 'Y', name: 'Yttrium', category: 'transition-metal', mass: 88.906, weight: 89, uses: 'Lasers, electronics' },
+    { number: 40, symbol: 'Zr', name: 'Zirconium', category: 'transition-metal', mass: 91.224, weight: 91, uses: 'Nuclear reactors, ceramics' },
+    { number: 41, symbol: 'Nb', name: 'Niobium', category: 'transition-metal', mass: 92.906, weight: 93, uses: 'Superalloys, medical devices' },
+    { number: 42, symbol: 'Mo', name: 'Molybdenum', category: 'transition-metal', mass: 95.95, weight: 96, uses: 'Steel alloys, electronics' },
+    { number: 43, symbol: 'Tc', name: 'Technetium', category: 'transition-metal', mass: 98, weight: 98, uses: 'Medical imaging' },
+    { number: 44, symbol: 'Ru', name: 'Ruthenium', category: 'transition-metal', mass: 101.07, weight: 101, uses: 'Electronics, catalysts' },
+    { number: 45, symbol: 'Rh', name: 'Rhodium', category: 'transition-metal', mass: 102.91, weight: 103, uses: 'Catalysts, jewelry' },
+    { number: 46, symbol: 'Pd', name: 'Palladium', category: 'transition-metal', mass: 106.42, weight: 106, uses: 'Catalysts, electronics' },
+    { number: 47, symbol: 'Ag', name: 'Silver', category: 'transition-metal', mass: 107.87, weight: 108, uses: 'Jewelry, electronics' },
+    { number: 48, symbol: 'Cd', name: 'Cadmium', category: 'transition-metal', mass: 112.41, weight: 112, uses: 'Batteries, pigments' },
+    { number: 49, symbol: 'In', name: 'Indium', category: 'post-transition', mass: 114.82, weight: 115, uses: 'LCD screens, electronics' },
+    { number: 50, symbol: 'Sn', name: 'Tin', category: 'post-transition', mass: 118.71, weight: 119, uses: 'Solder, plating' },
+    { number: 51, symbol: 'Sb', name: 'Antimony', category: 'metalloid', mass: 121.76, weight: 122, uses: 'Flame retardants, semiconductors' },
+    { number: 52, symbol: 'Te', name: 'Tellurium', category: 'metalloid', mass: 127.60, weight: 128, uses: 'Solar panels, alloys' },
+    { number: 53, symbol: 'I', name: 'Iodine', category: 'halogen', mass: 126.90, weight: 127, uses: 'Disinfectants, nutrition' },
+    { number: 54, symbol: 'Xe', name: 'Xenon', category: 'noble-gas', mass: 131.29, weight: 131, uses: 'Lighting, anesthetics' },
+    { number: 55, symbol: 'Cs', name: 'Cesium', category: 'alkali-metal', mass: 132.91, weight: 133, uses: 'Atomic clocks, research' },
+    { number: 56, symbol: 'Ba', name: 'Barium', category: 'alkaline-earth', mass: 137.33, weight: 137, uses: 'Medical imaging, glass' },
+    { number: 57, symbol: 'La', name: 'Lanthanum', category: 'lanthanide', mass: 138.91, weight: 139, uses: 'Camera lenses, catalysts' },
+    { number: 58, symbol: 'Ce', name: 'Cerium', category: 'lanthanide', mass: 140.12, weight: 140, uses: 'Catalysts, glass' },
+    { number: 59, symbol: 'Pr', name: 'Praseodymium', category: 'lanthanide', mass: 140.91, weight: 141, uses: 'Magnets, aircraft engines' },
+    { number: 60, symbol: 'Nd', name: 'Neodymium', category: 'lanthanide', mass: 144.24, weight: 144, uses: 'Magnets, lasers' },
+    { number: 61, symbol: 'Pm', name: 'Promethium', category: 'lanthanide', mass: 145, weight: 145, uses: 'Nuclear batteries' },
+    { number: 62, symbol: 'Sm', name: 'Samarium', category: 'lanthanide', mass: 150.36, weight: 150, uses: 'Magnets, cancer treatment' },
+    { number: 63, symbol: 'Eu', name: 'Europium', category: 'lanthanide', mass: 151.96, weight: 152, uses: 'TV screens, anti-counterfeiting' },
+    { number: 64, symbol: 'Gd', name: 'Gadolinium', category: 'lanthanide', mass: 157.25, weight: 157, uses: 'MRI contrast agents' },
+    { number: 65, symbol: 'Tb', name: 'Terbium', category: 'lanthanide', mass: 158.93, weight: 159, uses: 'Lighting, electronics' },
+    { number: 66, symbol: 'Dy', name: 'Dysprosium', category: 'lanthanide', mass: 162.50, weight: 163, uses: 'Magnets, lasers' },
+    { number: 67, symbol: 'Ho', name: 'Holmium', category: 'lanthanide', mass: 164.93, weight: 165, uses: 'Magnets, nuclear reactors' },
+    { number: 68, symbol: 'Er', name: 'Erbium', category: 'lanthanide', mass: 167.26, weight: 167, uses: 'Lasers, fiber optics' },
+    { number: 69, symbol: 'Tm', name: 'Thulium', category: 'lanthanide', mass: 168.93, weight: 169, uses: 'X-ray machines' },
+    { number: 70, symbol: 'Yb', name: 'Ytterbium', category: 'lanthanide', mass: 173.05, weight: 173, uses: 'Lasers, electronics' },
+    { number: 71, symbol: 'Lu', name: 'Lutetium', category: 'lanthanide', mass: 174.97, weight: 175, uses: 'PET scanners' },
+    { number: 72, symbol: 'Hf', name: 'Hafnium', category: 'transition-metal', mass: 178.49, weight: 178, uses: 'Nuclear reactors, alloys' },
+    { number: 73, symbol: 'Ta', name: 'Tantalum', category: 'transition-metal', mass: 180.95, weight: 181, uses: 'Electronics, surgical instruments' },
+    { number: 74, symbol: 'W', name: 'Tungsten', category: 'transition-metal', mass: 183.84, weight: 184, uses: 'Lightbulb filaments, cutting tools' },
+    { number: 75, symbol: 'Re', name: 'Rhenium', category: 'transition-metal', mass: 186.21, weight: 186, uses: 'Jet engines, catalysts' },
+    { number: 76, symbol: 'Os', name: 'Osmium', category: 'transition-metal', mass: 190.23, weight: 190, uses: 'Alloys, electrical contacts' },
+    { number: 77, symbol: 'Ir', name: 'Iridium', category: 'transition-metal', mass: 192.22, weight: 192, uses: 'Spark plugs, electronics' },
+    { number: 78, symbol: 'Pt', name: 'Platinum', category: 'transition-metal', mass: 195.08, weight: 195, uses: 'Jewelry, catalysts' },
+    { number: 79, symbol: 'Au', name: 'Gold', category: 'transition-metal', mass: 196.97, weight: 197, uses: 'Jewelry, electronics' },
+    { number: 80, symbol: 'Hg', name: 'Mercury', category: 'transition-metal', mass: 200.59, weight: 201, uses: 'Thermometers, lighting' },
+    { number: 81, symbol: 'Tl', name: 'Thallium', category: 'post-transition', mass: 204.38, weight: 204, uses: 'Electronics, pharmaceuticals' },
+    { number: 82, symbol: 'Pb', name: 'Lead', category: 'post-transition', mass: 207.2, weight: 207, uses: 'Batteries, radiation shielding' },
+    { number: 83, symbol: 'Bi', name: 'Bismuth', category: 'post-transition', mass: 208.98, weight: 209, uses: 'Medications, cosmetics' },
+    { number: 84, symbol: 'Po', name: 'Polonium', category: 'metalloid', mass: 209, weight: 209, uses: 'Nuclear batteries' },
+    { number: 85, symbol: 'At', name: 'Astatine', category: 'halogen', mass: 210, weight: 210, uses: 'Cancer treatment (experimental)' },
+    { number: 86, symbol: 'Rn', name: 'Radon', category: 'noble-gas', mass: 222, weight: 222, uses: 'Cancer treatment (historical)' },
+    { number: 87, symbol: 'Fr', name: 'Francium', category: 'alkali-metal', mass: 223, weight: 223, uses: 'Research' },
+    { number: 88, symbol: 'Ra', name: 'Radium', category: 'alkaline-earth', mass: 226, weight: 226, uses: 'Cancer treatment (historical)' },
+    { number: 89, symbol: 'Ac', name: 'Actinium', category: 'actinide', mass: 227, weight: 227, uses: 'Radiotherapy' },
+    { number: 90, symbol: 'Th', name: 'Thorium', category: 'actinide', mass: 232.04, weight: 232, uses: 'Nuclear reactors' },
+    { number: 91, symbol: 'Pa', name: 'Protactinium', category: 'actinide', mass: 231.04, weight: 231, uses: 'Research' },
+    { number: 92, symbol: 'U', name: 'Uranium', category: 'actinide', mass: 238.03, weight: 238, uses: 'Nuclear fuel' },
+    { number: 93, symbol: 'Np', name: 'Neptunium', category: 'actinide', mass: 237, weight: 237, uses: 'Research' },
+    { number: 94, symbol: 'Pu', name: 'Plutonium', category: 'actinide', mass: 244, weight: 244, uses: 'Nuclear weapons, fuel' },
+    { number: 95, symbol: 'Am', name: 'Americium', category: 'actinide', mass: 243, weight: 243, uses: 'Smoke detectors' },
+    { number: 96, symbol: 'Cm', name: 'Curium', category: 'actinide', mass: 247, weight: 247, uses: 'Space exploration' },
+    { number: 97, symbol: 'Bk', name: 'Berkelium', category: 'actinide', mass: 247, weight: 247, uses: 'Research' },
+    { number: 98, symbol: 'Cf', name: 'Californium', category: 'actinide', mass: 251, weight: 251, uses: 'Neutron source' },
+    { number: 99, symbol: 'Es', name: 'Einsteinium', category: 'actinide', mass: 252, weight: 252, uses: 'Research' },
+    { number: 100, symbol: 'Fm', name: 'Fermium', category: 'actinide', mass: 257, weight: 257, uses: 'Research' },
+    { number: 101, symbol: 'Md', name: 'Mendelevium', category: 'actinide', mass: 258, weight: 258, uses: 'Research' },
+    { number: 102, symbol: 'No', name: 'Nobelium', category: 'actinide', mass: 259, weight: 259, uses: 'Research' },
+    { number: 103, symbol: 'Lr', name: 'Lawrencium', category: 'actinide', mass: 262, weight: 262, uses: 'Research' },
+    { number: 104, symbol: 'Rf', name: 'Rutherfordium', category: 'transition-metal', mass: 267, weight: 267, uses: 'Research' },
+    { number: 105, symbol: 'Db', name: 'Dubnium', category: 'transition-metal', mass: 270, weight: 270, uses: 'Research' },
+    { number: 106, symbol: 'Sg', name: 'Seaborgium', category: 'transition-metal', mass: 271, weight: 271, uses: 'Research' },
+    { number: 107, symbol: 'Bh', name: 'Bohrium', category: 'transition-metal', mass: 270, weight: 270, uses: 'Research' },
+    { number: 108, symbol: 'Hs', name: 'Hassium', category: 'transition-metal', mass: 277, weight: 277, uses: 'Research' },
+    { number: 109, symbol: 'Mt', name: 'Meitnerium', category: 'transition-metal', mass: 278, weight: 278, uses: 'Research' },
+    { number: 110, symbol: 'Ds', name: 'Darmstadtium', category: 'transition-metal', mass: 281, weight: 281, uses: 'Research' },
+    { number: 111, symbol: 'Rg', name: 'Roentgenium', category: 'transition-metal', mass: 282, weight: 282, uses: 'Research' },
+    { number: 112, symbol: 'Cn', name: 'Copernicium', category: 'transition-metal', mass: 285, weight: 285, uses: 'Research' },
+    { number: 113, symbol: 'Nh', name: 'Nihonium', category: 'post-transition', mass: 286, weight: 286, uses: 'Research' },
+    { number: 114, symbol: 'Fl', name: 'Flerovium', category: 'post-transition', mass: 289, weight: 289, uses: 'Research' },
+    { number: 115, symbol: 'Mc', name: 'Moscovium', category: 'post-transition', mass: 290, weight: 290, uses: 'Research' },
+    { number: 116, symbol: 'Lv', name: 'Livermorium', category: 'post-transition', mass: 293, weight: 293, uses: 'Research' },
+    { number: 117, symbol: 'Ts', name: 'Tennessine', category: 'halogen', mass: 294, weight: 294, uses: 'Research' },
+    { number: 118, symbol: 'Og', name: 'Oganesson', category: 'noble-gas', mass: 294, weight: 294, uses: 'Research' }
+];
+
+
+        function createPeriodicTable() {
+            const table = document.getElementById('periodicTable');
+            elements.forEach(element => {
+                const elementDiv = document.createElement('div');
+                elementDiv.className = `element ${element.category}`;
+                elementDiv.innerHTML = `
+                    <span class="number">${element.number}</span>
+                    <span class="symbol">${element.symbol}</span>
+                `;
+                elementDiv.style.gridColumn = getGridColumn(element.number);
+                elementDiv.style.gridRow = getGridRow(element.number);
+                elementDiv.addEventListener('mouseover', (e) => showPopup(e, element));
+                elementDiv.addEventListener('mouseout', hidePopup);
+                table.appendChild(elementDiv);
+            });
+        }
+
+        function getGridColumn(number) {
+            if (number <= 2) return number === 2 ? 18 : 1;
+            if (number <= 18) return ((number - 2 - 1) % 8) + 13;
+            if (number <= 57 || (number >= 72 && number <= 89) || number >= 104) {
+                return ((number - 18 - 1) % 18) + 1;
+            }
+            return ((number - 57 - 1) % 15) + 3;
+        }
+
+        function getGridRow(number) {
+            if (number <= 2) return 1;
+            if (number <= 18) return 2 + Math.floor((number - 2 - 1) / 8);
+            if (number <= 57) return 4 + Math.floor((number - 18 - 1) / 18);
+            if (number <= 71) return 9;
+            if (number <= 89) return 5 + Math.floor((number - 72) / 18);
+            if (number <= 103) return 10;
+            return 7 + Math.floor((number - 104) / 18);
+        }
+
+        function showPopup(event, element) {
+            const popup = document.getElementById('popup');
+            popup.innerHTML = `
+                <h3>${element.name}</h3>
+                <p>Atomic Number: ${element.number}</p>
+                <p>Atomic Mass: ${element.mass}</p>
+                <p>Atomic Weight: ${element.weight}</p>
+                <p>Uses: ${element.uses}</p>
+            `;
+            popup.style.display = 'block';
+            popup.style.left = `${event.pageX + 10}px`;
+            popup.style.top = `${event.pageY + 10}px`;
+        }
+
+        function hidePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        createPeriodicTable();
+    </script>
+</body>
+</html>
