@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Form</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <div class="contact-container">
+      <div class="contact-us-button">
+        <button>Contact Us</button>
+      </div>
+
+      <h1 class="heading">GET IN TOUCH</h1>
+
+      <div class="form-container">
+        <div class="decorative-star">&#10042;</div>
+
+        <form id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">First name*</label>
+              <input type="text" id="name" placeholder="Your Name" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Last name</label>
+              <input type="text" id="lastname" placeholder="Your Last Name" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email address*</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="hello@reallygreatsite.com"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="subject">Email Type</label>
+              <div class="select-wrapper">
+                <select id="subject" required>
+                  <option value="" disabled selected>Select one</option>
+                  <option value="Website">Personal</option>
+                  <option value="Mobile App">Business</option>
+                  <option value="Branding">Transactional</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="message">Message*</label>
+            <textarea
+              id="message"
+              placeholder="Type your message here"
+              required
+            ></textarea>
+          </div>
+
+          <div class="submit-container">
+            <button type="submit" class="submit-btn">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+   <script src="./script.js"></script>
+  </body>
+</html>
