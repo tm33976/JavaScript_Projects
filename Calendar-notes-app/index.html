@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Notes Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+    <button id="show-sidebar-btn" class="show-sidebar-btn">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="app-container">
+        <!-- Sidebar for note navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1>Calendar Notes Pro</h1>
+                <button id="toggle-sidebar" class="icon-button"><i class="fas fa-bars"></i></button>
+            </div>
+            
+            <div class="sidebar-actions">
+                <button id="new-note-btn" class="primary-button"><i class="fas fa-plus"></i> New Note</button>
+                <button id="new-folder-btn" class="secondary-button"><i class="fas fa-folder-plus"></i> New Folder</button>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" id="search-notes" placeholder="Search notes...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            
+            <div class="view-options">
+                <span class="view-option" data-view="all"><i class="fas fa-sticky-note"></i> All Notes</span>
+                <span class="view-option" data-view="recent"><i class="fas fa-clock"></i> Recent</span>
+                <span class="view-option" data-view="favorites"><i class="fas fa-star"></i> Favorites</span>
+                <span class="view-option active" data-view="calendar"><i class="fas fa-calendar-alt"></i> Calendar</span>
+            </div>
+            
+            <div class="folders-section">
+                <h3>Folders</h3>
+                <ul id="folders-list" class="folders-list">
+                    <!-- Folders will be added here dynamically -->
+                </ul>
+            </div>
+            
+            <div class="tags-section">
+                <h3>Tags</h3>
+                <div id="tags-container" class="tags-container">
+                    <!-- Tags will be added here dynamically -->
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <button id="import-btn" class="icon-button" title="Import Notes"><i class="fas fa-file-import"></i></button>
+                <button id="export-btn" class="icon-button" title="Export Notes"><i class="fas fa-file-export"></i></button>
+                <button id="settings-btn" class="icon-button" title="Settings"><i class="fas fa-cog"></i></button>
+                <button id="theme-toggle" class="icon-button" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+            </div>
+        </aside>
+        
+        <!-- Main content area -->
+        <main class="main-content">
+            <!-- Calendar view section -->
+            <section class="calendar-section" id="calendar-section">
+                <div class="calendar-header">
+                    <div class="calendar-title">
+                        <button id="prev-month-btn" class="icon-button"><i class="fas fa-chevron-left"></i></button>
+                        <h2 id="current-month-display">January 2023</h2>
+                        <button id="next-month-btn" class="icon-button"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-actions">
+                        <button id="today-btn" class="secondary-button">Today</button>
+                        <div class="year-selector">
+                            <button id="prev-year-btn" class="icon-button"><i class="fas fa-chevron-left"></i></button>
+                            <span id="current-year-display">2023</span>
+                            <button id="next-year-btn" class="icon-button"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="calendar-grid">
+                    <div class="calendar-day-header">Sun</div>
+                    <div class="calendar-day-header">Mon</div>
+                    <div class="calendar-day-header">Tue</div>
+                    <div class="calendar-day-header">Wed</div>
+                    <div class="calendar-day-header">Thu</div>
+                    <div class="calendar-day-header">Fri</div>
+                    <div class="calendar-day-header">Sat</div>
+                    
+                    <div id="calendar-days" class="calendar-days-container"></div>
+                </div>
+            </section>
+            
+            <!-- Notes list section -->
+            <section class="notes-list-section" id="notes-list-section">
+                <div class="notes-list-header">
+                    <h2 id="current-view-title">All Notes</h2>
+                    <div class="notes-list-actions">
+                        <select id="sort-options">
+                            <option value="date-desc">Newest First</option>
+                            <option value="date-asc">Oldest First</option>
+                            <option value="alpha-asc">A-Z</option>
+                            <option value="alpha-desc">Z-A</option>
+                        </select>
+                        <button id="list-view-btn" class="icon-button active" title="List View"><i class="fas fa-list"></i></button>
+                        <button id="grid-view-btn" class="icon-button" title="Grid View"><i class="fas fa-th-large"></i></button>
+                    </div>
+                </div>
+                
+                <div id="notes-container" class="notes-container grid-view">
+                    <!-- Notes will be added here dynamically -->
+                </div>
+            </section>
+            
+            <!-- Note editor section -->
+            <section class="note-editor-section" id="note-editor-section">
+                <div class="note-editor-header">
+                    <div class="note-title-container">
+                        <input type="text" id="note-title" placeholder="Untitled Note">
+                        <span id="save-status">All changes saved</span>
+                    </div>
+                    <div class="note-actions">
+                        <button id="favorite-btn" class="icon-button" title="Add to Favorites"><i class="far fa-star"></i></button>
+                        <button id="calendar-btn" class="icon-button" title="Add to Calendar"><i class="fas fa-calendar-plus"></i></button>
+                        <button id="history-btn" class="icon-button" title="Version History"><i class="fas fa-history"></i></button>
+                        <button id="save-btn" class="icon-button" title="Save Note"><i class="fas fa-save"></i></button>
+                        <button id="delete-note-btn" class="icon-button" title="Delete Note"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                
+                <!-- Quill editor container -->
+                <div id="editor-container" class="editor-container">
+                    <div id="editor"></div>
+                </div>
+                
+                <div class="note-footer">
+                    <div id="note-tags" class="note-tags">
+                        <!-- Tags will be added here dynamically -->
+                    </div>
+                    <div id="note-info" class="note-info">
+                        <span id="word-count">0 words</span>
+                        <span id="last-modified">Last modified: Just now</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Modals -->
+    <div id="folder-modal" class="modal">
+        <div class="modal-content">
+            <h3>Create New Folder</h3>
+            <input type="text" id="folder-name-input" placeholder="Folder name">
+            <div class="modal-actions">
+                <button id="cancel-folder" class="secondary-button">Cancel</button>
+                <button id="create-folder" class="primary-button">Create</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="tag-modal" class="modal">
+        <div class="modal-content">
+            <h3>Add Tag</h3>
+            <input type="text" id="tag-name-input" placeholder="Tag name">
+            <div class="modal-actions">
+                <button id="cancel-tag" class="secondary-button">Cancel</button>
+                <button id="create-tag" class="primary-button">Add</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="quick-note-modal" class="modal">
+        <div class="modal-content">
+            <h3>Quick Note for <span id="quick-note-date">Date</span></h3>
+            <input type="text" id="quick-note-title" placeholder="Note title">
+            <div id="quick-note-editor"></div>
+            <div class="modal-actions">
+                <button id="cancel-quick-note" class="secondary-button">Cancel</button>
+                <button id="save-quick-note" class="primary-button">Save Note</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="calendar-note-modal" class="modal">
+        <div class="modal-content">
+            <h3>Add Note to Calendar</h3>
+            <div class="setting-item">
+                <label for="calendar-date">Date</label>
+                <input type="date" id="calendar-date">
+            </div>
+            <div class="setting-item">
+                <label for="calendar-note-select">Select Note</label>
+                <select id="calendar-note-select">
+                    <option value="">Create New Note</option>
+                    <!-- Notes will be added here dynamically -->
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button id="cancel-calendar-note" class="secondary-button">Cancel</button>
+                <button id="add-calendar-note" class="primary-button">Add to Calendar</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="settings-modal" class="modal">
+        <div class="modal-content settings-modal-content">
+            <h3>Settings</h3>
+            <div class="settings-section">
+                <h4>Appearance</h4>
+                <div class="setting-item">
+                    <label for="font-size">Font Size</label>
+                    <select id="font-size">
+                        <option value="small">Small</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label for="font-family">Font Family</label>
+                    <select id="font-family">
+                        <option value="Inter, sans-serif" selected>Inter</option>
+                        <option value="Arial, sans-serif">Arial</option>
+                        <option value="Georgia, serif">Georgia</option>
+                        <option value="monospace">Monospace</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label for="line-spacing">Line Spacing</label>
+                    <select id="line-spacing">
+                        <option value="1">Compact</option>
+                        <option value="1.5" selected>Normal</option>
+                        <option value="2">Relaxed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="settings-section">
+                <h4>Auto Save</h4>
+                <div class="setting-item">
+                    <label for="auto-save">Auto Save Interval (seconds)</label>
+                    <input type="number" id="auto-save" min="1" max="60" value="2">
+                </div>
+            </div>
+            <div class="settings-section">
+                <h4>API Configuration</h4>
+                <div class="setting-item">
+                    <label for="api-url">API URL</label>
+                    <input type="text" id="api-url" placeholder="Enter API URL">
+                </div>
+                <div class="setting-item">
+                    <label for="api-key">API Key</label>
+                    <input type="password" id="api-key" placeholder="Enter API Key">
+                </div>
+                <div class="setting-item">
+                    <button id="test-api" class="secondary-button">Test Connection</button>
+                </div>
+            </div>
+            <div class="settings-section">
+                <h4>Storage</h4>
+                <div class="setting-item">
+                    <button id="clear-all-data" class="danger-button">Clear All Data</button>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="close-settings" class="primary-button">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="history-modal" class="modal">
+        <div class="modal-content">
+            <h3>Version History</h3>
+            <div id="history-list" class="history-list">
+                <!-- History items will be added here dynamically -->
+            </div>
+            <div class="modal-actions">
+                <button id="close-history" class="primary-button">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="confirm-title">Confirm Action</h3>
+            <p id="confirm-message">Are you sure you want to proceed?</p>
+            <div class="modal-actions">
+                <button id="cancel-confirm" class="secondary-button">Cancel</button>
+                <button id="confirm-action" class="danger-button">Confirm</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast-container" class="toast-container">
+        <!-- Toast notifications will be added here dynamically -->
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
