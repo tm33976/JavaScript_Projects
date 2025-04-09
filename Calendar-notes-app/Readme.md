@@ -44,6 +44,7 @@ This isn't just a template thrown together with tools — it's handcrafted.
 ├── config.js          # Handles .env loading & configuration
 ├── .env.example       # Example environment config
 ├── package.json       # Basic project metadata
+```
 
 
 ## 👨‍💻 Author
